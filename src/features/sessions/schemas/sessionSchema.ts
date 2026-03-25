@@ -70,6 +70,7 @@ export const SessionSchema = z.object({
   promptId: z.string().uuid().optional(),
   isFavorite: z.boolean().optional(),
   tags: z.array(z.string()).optional(),
+  saveToLibrary: z.boolean().optional(),
 })
 
 export const QuickEntrySchema = SessionSchema.pick({

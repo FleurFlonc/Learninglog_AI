@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSessionStore } from '../store/sessionStore'
+import { usePromptStore } from '@/features/prompts/store/promptStore'
 import { useAuthStore } from '@/features/auth/store/authStore'
 import { SessionSchema, QuickEntrySchema } from '../schemas/sessionSchema'
 import type { SessionFormValues, QuickEntryFormValues } from '../schemas/sessionSchema'
@@ -202,6 +203,15 @@ function ExtendedForm({ onSave }: { onSave: (data: SessionFormValues) => Promise
           placeholder="Hoe zou je de prompt achteraf verbeteren?" className={inputClass} />
       </FormField>
 
+      <label className="flex items-center gap-3 cursor-pointer select-none pt-1">
+        <input
+          type="checkbox"
+          {...register('saveToLibrary')}
+          className="h-4 w-4 rounded border-gray-300 accent-[#7a9e87]"
+        />
+        <span className="text-sm text-gray-700">Opslaan in promptbibliotheek</span>
+      </label>
+
       <SubmitBar isSubmitting={isSubmitting} />
     </form>
   )
@@ -227,6 +237,7 @@ export function NewSessionPage() {
   const [tab, setTab] = useState<'quick' | 'extended'>('quick')
   const navigate = useNavigate()
   const { create } = useSessionStore()
+  const { create: createPrompt } = usePromptStore()
   const user = useAuthStore((s) => s.user)
 
   async function handleQuickSave(data: QuickEntryFormValues) {
@@ -237,7 +248,27 @@ export function NewSessionPage() {
 
   async function handleExtendedSave(data: SessionFormValues) {
     if (!user) return
-    await create(data, user)
+    const session = await create(data, user)
+
+    if (data.saveToLibrary && data.userPrompt && data.userPrompt.length >= 5) {
+      const goalText = data.promptGoal || data.taskDescription
+      await createPrompt({
+        title: data.taskDescription.slice(0, 100),
+        aiTools: data.aiTools && data.aiTools.length > 0 ? data.aiTools : ['other'],
+        taskType: data.taskType,
+        goalSummary: goalText.slice(0, 200),
+        goalFull: data.promptGoal,
+        systemPromptSummary: data.systemPrompt ? data.systemPrompt.slice(0, 500) : undefined,
+        systemPromptFull: data.systemPrompt,
+        userPromptSummary: data.userPrompt.slice(0, 500),
+        userPromptFull: data.userPrompt,
+        outputSummary: data.promptOutput ? data.promptOutput.slice(0, 500) : undefined,
+        outputFull: data.promptOutput,
+        sessionId: session.id,
+        tags: data.tags,
+      }, user)
+    }
+
     navigate('/sessions')
   }
 
