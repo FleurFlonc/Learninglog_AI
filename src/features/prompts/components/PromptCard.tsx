@@ -66,6 +66,13 @@ export function PromptCard({ prompt }: PromptCardProps) {
         )}
       </div>
 
+      {prompt.userPromptSummary && (
+        <div className="mt-3 rounded-lg bg-gray-50 px-3 py-2">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">Gebruikersprompt</p>
+          <p className="text-xs text-gray-600 line-clamp-2 font-mono">{prompt.userPromptSummary}</p>
+        </div>
+      )}
+
       <div className="mt-3 flex flex-wrap items-center gap-1.5">
         {prompt.aiTools.map((tool) => (
           <span
