@@ -23,7 +23,9 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+    const hash = window.location.hash
+    const isAuthCallback = hash.includes('type=invite') || hash.includes('type=recovery')
+    return <Navigate to={`/login${isAuthCallback ? hash : ''}`} replace />
   }
 
   return <>{children}</>
