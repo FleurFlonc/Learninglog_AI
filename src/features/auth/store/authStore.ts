@@ -7,15 +7,18 @@ interface AuthStore {
   user: TeamUser | null
   isLoading: boolean
   isAuthenticated: boolean
+  requiresPasswordSetup: boolean
   signIn: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
   initialize: () => Promise<void>
+  clearPasswordSetup: () => void
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
   user: null,
   isLoading: true,
   isAuthenticated: false,
+  requiresPasswordSetup: false,
 
   signIn: async (email, password) => {
     set({ isLoading: true })
@@ -37,15 +40,36 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }
   },
 
+  clearPasswordSetup: () => set({ requiresPasswordSetup: false }),
+
   initialize: async () => {
     set({ isLoading: true })
 
-    // Haal huidige sessie op
-    const user = await authService.getCurrentUser()
-    set({ user, isAuthenticated: user !== null, isLoading: false })
+    // Detecteer invite/recovery via URL hash vóór Supabase sessie ophaalt
+    const hash = window.location.hash
+    const isInviteOrRecovery =
+      hash.includes('type=invite') || hash.includes('type=recovery')
 
-    // Luister naar auth state changes
-    supabase.auth.onAuthStateChange((_event, session) => {
+    if (isInviteOrRecovery) {
+      set({ requiresPasswordSetup: true, isAuthenticated: false, isLoading: false })
+    } else {
+      const user = await authService.getCurrentUser()
+      set({ user, isAuthenticated: user !== null, isLoading: false })
+    }
+
+    supabase.auth.onAuthStateChange((event, session) => {
+      // Password recovery flow
+      if (event === 'PASSWORD_RECOVERY') {
+        set({ requiresPasswordSetup: true, isAuthenticated: false, isLoading: false })
+        return
+      }
+
+      // Invite flow: SIGNED_IN terwijl hash nog type=invite bevat
+      if (event === 'SIGNED_IN' && window.location.hash.includes('type=invite')) {
+        set({ requiresPasswordSetup: true, isAuthenticated: false, isLoading: false })
+        return
+      }
+
       if (session?.user) {
         const u = session.user
         const mapped: TeamUser = {

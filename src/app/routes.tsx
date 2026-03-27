@@ -12,7 +12,7 @@ import { NewPromptPage } from '@/features/prompts/pages/NewPromptPage'
 import { PromptDetailPage } from '@/features/prompts/pages/PromptDetailPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading } = useAuthStore()
+  const { isAuthenticated, isLoading, requiresPasswordSetup } = useAuthStore()
 
   if (isLoading) {
     return (
@@ -22,10 +22,8 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     )
   }
 
-  if (!isAuthenticated) {
-    const hash = window.location.hash
-    const isAuthCallback = hash.includes('type=invite') || hash.includes('type=recovery')
-    return <Navigate to={`/login${isAuthCallback ? hash : ''}`} replace />
+  if (!isAuthenticated || requiresPasswordSetup) {
+    return <Navigate to="/login" replace />
   }
 
   return <>{children}</>
