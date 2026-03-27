@@ -70,6 +70,7 @@ function SectionDivider({ title }: { title: string }) {
 function QuickForm({ onSave }: { onSave: (data: QuickEntryFormValues) => Promise<void> }) {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<QuickEntryFormValues>({
     resolver: zodResolver(QuickEntrySchema),
+    defaultValues: { isPublic: true },
   })
 
   return (
@@ -111,7 +112,6 @@ function QuickForm({ onSave }: { onSave: (data: QuickEntryFormValues) => Promise
         <input
           type="checkbox"
           {...register('isPublic')}
-          defaultChecked={true}
           className="h-4 w-4 rounded border-gray-300 accent-[#7a9e87]"
         />
       </label>
@@ -124,7 +124,7 @@ function QuickForm({ onSave }: { onSave: (data: QuickEntryFormValues) => Promise
 function ExtendedForm({ onSave }: { onSave: (data: SessionFormValues) => Promise<void> }) {
   const { register, handleSubmit, control, formState: { errors, isSubmitting } } = useForm<SessionFormValues>({
     resolver: zodResolver(SessionSchema),
-    defaultValues: { aiTools: [], tags: [] },
+    defaultValues: { aiTools: [], tags: [], isPublic: true },
   })
 
   return (
@@ -233,7 +233,6 @@ function ExtendedForm({ onSave }: { onSave: (data: SessionFormValues) => Promise
         <input
           type="checkbox"
           {...register('isPublic')}
-          defaultChecked={true}
           className="h-4 w-4 rounded border-gray-300 accent-[#7a9e87]"
         />
       </label>
