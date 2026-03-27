@@ -45,15 +45,17 @@ export const useAuthStore = create<AuthStore>((set) => ({
   initialize: async () => {
     set({ isLoading: true })
 
-    // Detecteer invite/recovery via URL hash vóór Supabase sessie ophaalt
     const hash = window.location.hash
     const isInviteOrRecovery =
       hash.includes('type=invite') || hash.includes('type=recovery')
 
+    // Altijd getCurrentUser aanroepen zodat Supabase de token verwerkt en een sessie aanmaakt
+    const user = await authService.getCurrentUser()
+
     if (isInviteOrRecovery) {
+      // Sessie is aangemaakt (nodig voor updateUser), maar gebruiker moet eerst wachtwoord instellen
       set({ requiresPasswordSetup: true, isAuthenticated: false, isLoading: false })
     } else {
-      const user = await authService.getCurrentUser()
       set({ user, isAuthenticated: user !== null, isLoading: false })
     }
 
