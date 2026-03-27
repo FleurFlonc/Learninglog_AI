@@ -39,6 +39,7 @@ function rowToSession(row: SessionRow): LearningSession {
     improvedPrompt: row.improved_prompt ?? undefined,
     promptId: row.prompt_id ?? undefined,
     isFavorite: row.is_favorite ?? undefined,
+    isPublic: row.is_public ?? true,
     tags: row.tags ?? undefined,
   }
 }
@@ -71,6 +72,7 @@ export const sessionService = {
         improved_prompt: input.improvedPrompt ?? null,
         prompt_id: input.promptId ?? null,
         is_favorite: input.isFavorite ?? false,
+        is_public: input.isPublic ?? true,
         tags: input.tags ?? null,
       } satisfies Database['public']['Tables']['sessions']['Insert'])
       .select()
@@ -102,6 +104,7 @@ export const sessionService = {
       ...(fields.improvedPrompt !== undefined && { improved_prompt: fields.improvedPrompt }),
       ...(fields.promptId !== undefined && { prompt_id: fields.promptId }),
       ...(fields.isFavorite !== undefined && { is_favorite: fields.isFavorite }),
+      ...(fields.isPublic !== undefined && { is_public: fields.isPublic }),
       ...(fields.tags !== undefined && { tags: fields.tags }),
       ...(fields.userDisplayName !== undefined && { user_display_name: fields.userDisplayName }),
     }

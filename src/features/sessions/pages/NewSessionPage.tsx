@@ -103,6 +103,19 @@ function QuickForm({ onSave }: { onSave: (data: QuickEntryFormValues) => Promise
         />
       </FormField>
 
+      <label className="flex items-center justify-between gap-3 cursor-pointer select-none rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+        <div>
+          <p className="text-sm font-medium text-[#1A1A1A]">Deel met team</p>
+          <p className="text-xs text-gray-400">Zichtbaar voor alle teamleden</p>
+        </div>
+        <input
+          type="checkbox"
+          {...register('isPublic')}
+          defaultChecked={true}
+          className="h-4 w-4 rounded border-gray-300 accent-[#7a9e87]"
+        />
+      </label>
+
       <SubmitBar isSubmitting={isSubmitting} />
     </form>
   )
@@ -212,6 +225,19 @@ function ExtendedForm({ onSave }: { onSave: (data: SessionFormValues) => Promise
         <span className="text-sm text-gray-700">Opslaan in promptbibliotheek</span>
       </label>
 
+      <label className="flex items-center justify-between gap-3 cursor-pointer select-none rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+        <div>
+          <p className="text-sm font-medium text-[#1A1A1A]">Deel met team</p>
+          <p className="text-xs text-gray-400">Zichtbaar voor alle teamleden</p>
+        </div>
+        <input
+          type="checkbox"
+          {...register('isPublic')}
+          defaultChecked={true}
+          className="h-4 w-4 rounded border-gray-300 accent-[#7a9e87]"
+        />
+      </label>
+
       <SubmitBar isSubmitting={isSubmitting} />
     </form>
   )
@@ -242,7 +268,7 @@ export function NewSessionPage() {
 
   async function handleQuickSave(data: QuickEntryFormValues) {
     if (!user) return
-    await create(data, user)
+    await create({ ...data, isPublic: data.isPublic ?? true }, user)
     navigate('/sessions')
   }
 

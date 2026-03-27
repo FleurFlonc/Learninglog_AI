@@ -35,6 +35,7 @@ export interface Database {
           improved_prompt: string | null
           prompt_id: string | null
           is_favorite: boolean | null
+          is_public: boolean | null
           tags: string[] | null
         }
         Insert: {
@@ -61,6 +62,7 @@ export interface Database {
           improved_prompt?: string | null
           prompt_id?: string | null
           is_favorite?: boolean | null
+          is_public?: boolean | null
           tags?: string[] | null
         }
         Update: {
@@ -87,6 +89,7 @@ export interface Database {
           improved_prompt?: string | null
           prompt_id?: string | null
           is_favorite?: boolean | null
+          is_public?: boolean | null
           tags?: string[] | null
         }
       }

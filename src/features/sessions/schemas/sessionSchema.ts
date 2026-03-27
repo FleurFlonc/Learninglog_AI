@@ -69,6 +69,7 @@ export const SessionSchema = z.object({
   improvedPrompt: z.string().max(10000).optional(),
   promptId: z.string().uuid().optional(),
   isFavorite: z.boolean().optional(),
+  isPublic: z.boolean().optional(),
   tags: z.array(z.string()).optional(),
   saveToLibrary: z.boolean().optional(),
 })
@@ -77,6 +78,7 @@ export const QuickEntrySchema = SessionSchema.pick({
   taskDescription: true,
   status: true,
   lessonLearned: true,
+  isPublic: true,
 })
 
 export type SessionFormValues = z.infer<typeof SessionSchema>

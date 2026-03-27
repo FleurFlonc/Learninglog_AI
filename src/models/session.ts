@@ -37,6 +37,7 @@ export interface LearningSession {
 
   // Meta
   isFavorite?: boolean
+  isPublic?: boolean
   tags?: string[]
 }
 
