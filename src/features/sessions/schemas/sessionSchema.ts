@@ -41,6 +41,9 @@ const resolutionTypeSchema = z.enum([
   'other',
 ])
 
+const emptyToUndefined = (val: unknown) =>
+  val === '' || val === null ? undefined : val
+
 export const SessionSchema = z.object({
   taskDescription: z
     .string()
@@ -54,13 +57,10 @@ export const SessionSchema = z.object({
   whatWentWrong: z.string().optional(),
   resolution: z.string().optional(),
   reflectionNotes: z.string().optional(),
-  aiTools: z
-    .array(aiToolSchema)
-    .min(1, 'Selecteer minimaal één tool')
-    .optional(),
-  taskType: taskTypeSchema.optional(),
-  problemCategory: problemCategorySchema.optional(),
-  resolutionType: resolutionTypeSchema.optional(),
+  aiTools: z.array(aiToolSchema).optional(),
+  taskType: z.preprocess(emptyToUndefined, taskTypeSchema.optional()),
+  problemCategory: z.preprocess(emptyToUndefined, problemCategorySchema.optional()),
+  resolutionType: z.preprocess(emptyToUndefined, resolutionTypeSchema.optional()),
   // Prompt velden
   promptGoal: z.string().max(500).optional(),
   systemPrompt: z.string().max(10000).optional(),

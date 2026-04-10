@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSessionStore } from '../store/sessionStore'
+import { usePromptStore } from '@/features/prompts/store/promptStore'
 import { useAuthStore } from '@/features/auth/store/authStore'
 import { SessionSchema } from '../schemas/sessionSchema'
 import type { SessionFormValues } from '../schemas/sessionSchema'
@@ -184,6 +185,8 @@ function EditMode({ session, onCancel, onSave }: {
       improvedPrompt: session.improvedPrompt ?? '',
       tags: session.tags ?? [],
       isFavorite: session.isFavorite,
+      isPublic: session.isPublic ?? true,
+      saveToLibrary: false,
     },
   })
 
@@ -270,6 +273,34 @@ function EditMode({ session, onCancel, onSave }: {
             placeholder="Hoe zou je de prompt achteraf verbeteren?" className={inputClass} />
         </FormField>
 
+        {!session.promptId && (
+          <label className="flex items-center gap-3 cursor-pointer select-none pt-1">
+            <input
+              type="checkbox"
+              {...register('saveToLibrary')}
+              className="h-4 w-4 rounded border-gray-300 accent-[#7a9e87]"
+            />
+            <span className="text-sm text-gray-700">Opslaan in promptbibliotheek</span>
+          </label>
+        )}
+        {session.promptId && (
+          <p className="text-sm text-sage-600 flex items-center gap-1.5 pt-1">
+            <span>✓</span> Staat al in de promptbibliotheek
+          </p>
+        )}
+
+        <label className="flex items-center justify-between gap-3 cursor-pointer select-none rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+          <div>
+            <p className="text-sm font-medium text-[#1A1A1A]">Deel met team</p>
+            <p className="text-xs text-gray-400">Zichtbaar voor alle teamleden</p>
+          </div>
+          <input
+            type="checkbox"
+            {...register('isPublic')}
+            className="h-4 w-4 rounded border-gray-300 accent-[#7a9e87]"
+          />
+        </label>
+
         <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
           <button type="button" onClick={onCancel}
             className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition">
@@ -289,6 +320,7 @@ export function SessionDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { sessions, fetchAll, update, remove } = useSessionStore()
+  const { create: createPrompt } = usePromptStore()
   const user = useAuthStore((s) => s.user)
   const [isEditing, setIsEditing] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -306,8 +338,28 @@ export function SessionDetailPage() {
   }, [sessions, session])
 
   async function handleSave(data: SessionFormValues) {
-    if (!id) return
+    if (!id || !session) return
     await update({ id, ...data })
+
+    if (data.saveToLibrary && !session.promptId && data.userPrompt && data.userPrompt.length >= 5 && user) {
+      const goalText = data.promptGoal || data.taskDescription
+      await createPrompt({
+        title: data.taskDescription.slice(0, 100),
+        aiTools: data.aiTools && data.aiTools.length > 0 ? data.aiTools : ['other'],
+        taskType: data.taskType,
+        goalSummary: goalText.slice(0, 200),
+        goalFull: data.promptGoal,
+        systemPromptSummary: data.systemPrompt ? data.systemPrompt.slice(0, 500) : undefined,
+        systemPromptFull: data.systemPrompt,
+        userPromptSummary: data.userPrompt.slice(0, 500),
+        userPromptFull: data.userPrompt,
+        outputSummary: data.promptOutput ? data.promptOutput.slice(0, 500) : undefined,
+        outputFull: data.promptOutput,
+        sessionId: id,
+        tags: data.tags,
+      }, user)
+    }
+
     setIsEditing(false)
   }
 
