@@ -1,25 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import type { PromptEntry } from '@/models/prompt'
-
-const toolLabels: Record<string, string> = {
-  chatgpt: 'ChatGPT',
-  claude: 'Claude',
-  cursor: 'Cursor',
-  gemini: 'Gemini',
-  copilot: 'Copilot',
-  other: 'Overig',
-}
-
-const taskTypeLabels: Record<string, string> = {
-  debugging: 'Debugging',
-  prompting: 'Prompting',
-  writing: 'Schrijven',
-  research: 'Onderzoek',
-  automation: 'Automatisering',
-  ideation: 'Ideevorming',
-  ontwikkelen: 'Ontwikkelen',
-  other: 'Overig',
-}
+import { toolLabels, taskTypeLabels } from '@/lib/labels'
 
 function StarRating({ rating }: { rating: number }) {
   return (

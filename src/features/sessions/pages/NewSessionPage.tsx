@@ -12,51 +12,7 @@ import { FormField, inputClass } from '@/components/forms/FormField'
 import { SelectField } from '@/components/forms/SelectField'
 import { TagsField } from '@/components/forms/TagsField'
 import { MultiSelectField } from '@/components/forms/MultiSelectField'
-
-const statusOptions = [
-  { value: 'success', label: 'Gelukt' },
-  { value: 'partial', label: 'Deels gelukt' },
-  { value: 'failed', label: 'Mislukt' },
-]
-
-const aiToolOptions = [
-  { value: 'chatgpt', label: 'ChatGPT' },
-  { value: 'claude', label: 'Claude' },
-  { value: 'cursor', label: 'Cursor' },
-  { value: 'gemini', label: 'Gemini' },
-  { value: 'copilot', label: 'Copilot' },
-  { value: 'other', label: 'Overig' },
-]
-
-const taskTypeOptions = [
-  { value: 'debugging', label: 'Debugging' },
-  { value: 'prompting', label: 'Prompting' },
-  { value: 'writing', label: 'Schrijven' },
-  { value: 'research', label: 'Onderzoek' },
-  { value: 'automation', label: 'Automatisering' },
-  { value: 'ideation', label: 'Ideevorming' },
-  { value: 'ontwikkelen', label: 'Ontwikkelen' },
-  { value: 'other', label: 'Overig' },
-]
-
-const problemCategoryOptions = [
-  { value: 'prompting', label: 'Prompting' },
-  { value: 'technical', label: 'Technisch' },
-  { value: 'context', label: 'Context' },
-  { value: 'output_quality', label: 'Output kwaliteit' },
-  { value: 'workflow', label: 'Workflow' },
-  { value: 'unknown', label: 'Onbekend' },
-]
-
-const resolutionTypeOptions = [
-  { value: 'reprompt', label: 'Opnieuw geprompt' },
-  { value: 'more_context', label: 'Meer context' },
-  { value: 'changed_tool', label: 'Andere tool' },
-  { value: 'manual_fix', label: 'Handmatig opgelost' },
-  { value: 'code_fix', label: 'Code fix' },
-  { value: 'research', label: 'Onderzoek' },
-  { value: 'other', label: 'Overig' },
-]
+import { statusOptions, aiToolOptions, taskTypeOptions, problemCategoryOptions, resolutionTypeOptions } from '@/lib/labels'
 
 function SectionDivider({ title }: { title: string }) {
   return (

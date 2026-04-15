@@ -14,30 +14,7 @@ import { SelectField } from '@/components/forms/SelectField'
 import { MultiSelectField } from '@/components/forms/MultiSelectField'
 import { TagsField } from '@/components/forms/TagsField'
 import { RatingField } from '@/components/forms/RatingField'
-
-const toolLabels: Record<string, string> = {
-  chatgpt: 'ChatGPT', claude: 'Claude', cursor: 'Cursor',
-  gemini: 'Gemini', copilot: 'Copilot', other: 'Overig',
-}
-
-const taskTypeLabels: Record<string, string> = {
-  debugging: 'Debugging', prompting: 'Prompting', writing: 'Schrijven',
-  research: 'Onderzoek', automation: 'Automatisering', ideation: 'Ideevorming',
-  ontwikkelen: 'Ontwikkelen', other: 'Overig',
-}
-
-const aiToolOptions = [
-  { value: 'chatgpt', label: 'ChatGPT' }, { value: 'claude', label: 'Claude' },
-  { value: 'cursor', label: 'Cursor' }, { value: 'gemini', label: 'Gemini' },
-  { value: 'copilot', label: 'Copilot' }, { value: 'other', label: 'Overig' },
-]
-
-const taskTypeOptions = [
-  { value: 'debugging', label: 'Debugging' }, { value: 'prompting', label: 'Prompting' },
-  { value: 'writing', label: 'Schrijven' }, { value: 'research', label: 'Onderzoek' },
-  { value: 'automation', label: 'Automatisering' }, { value: 'ideation', label: 'Ideevorming' },
-  { value: 'ontwikkelen', label: 'Ontwikkelen' }, { value: 'other', label: 'Overig' },
-]
+import { toolLabels, taskTypeLabels, aiToolOptions, taskTypeOptions } from '@/lib/labels'
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })

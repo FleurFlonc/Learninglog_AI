@@ -1,26 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import type { LearningSession } from '@/models/session'
 import { StatusBadge } from '@/components/feedback/StatusBadge'
-
-const toolLabels: Record<string, string> = {
-  chatgpt: 'ChatGPT',
-  claude: 'Claude',
-  cursor: 'Cursor',
-  gemini: 'Gemini',
-  copilot: 'Copilot',
-  other: 'Overig',
-}
-
-const taskTypeLabels: Record<string, string> = {
-  debugging: 'Debugging',
-  prompting: 'Prompting',
-  writing: 'Schrijven',
-  research: 'Onderzoek',
-  automation: 'Automatisering',
-  ideation: 'Ideevorming',
-  ontwikkelen: 'Ontwikkelen',
-  other: 'Overig',
-}
+import { toolLabels, taskTypeLabels } from '@/lib/labels'
 
 function truncate(text: string, max: number) {
   return text.length > max ? text.slice(0, max) + '…' : text

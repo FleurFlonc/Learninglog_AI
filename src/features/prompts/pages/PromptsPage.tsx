@@ -6,28 +6,10 @@ import { PageHeader } from '@/components/layout/PageHeader'
 import { LoadingSpinner } from '@/components/feedback/LoadingSpinner'
 import { EmptyState } from '@/components/feedback/EmptyState'
 import type { AIToolType, TaskType } from '@/models/enums'
+import { taskTypeSelectOptions, aiToolFilterOptions } from '@/lib/labels'
 
-const taskTypeOptions: { value: TaskType | ''; label: string }[] = [
-  { value: '', label: 'Alle types' },
-  { value: 'debugging', label: 'Debugging' },
-  { value: 'prompting', label: 'Prompting' },
-  { value: 'writing', label: 'Schrijven' },
-  { value: 'research', label: 'Onderzoek' },
-  { value: 'automation', label: 'Automatisering' },
-  { value: 'ideation', label: 'Ideevorming' },
-  { value: 'ontwikkelen', label: 'Ontwikkelen' },
-  { value: 'other', label: 'Overig' },
-]
-
-const aiToolOptions: { value: AIToolType | ''; label: string }[] = [
-  { value: '', label: 'Alle tools' },
-  { value: 'chatgpt', label: 'ChatGPT' },
-  { value: 'claude', label: 'Claude' },
-  { value: 'cursor', label: 'Cursor' },
-  { value: 'gemini', label: 'Gemini' },
-  { value: 'copilot', label: 'Copilot' },
-  { value: 'other', label: 'Overig' },
-]
+const taskTypeOptions = taskTypeSelectOptions as { value: TaskType | ''; label: string }[]
+const aiToolOptions = aiToolFilterOptions as { value: AIToolType | ''; label: string }[]
 
 export function PromptsPage() {
   const navigate = useNavigate()

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import type { SessionStatus, TaskType } from '@/models/enums'
+import { statusFilterOptions, taskTypeFilterOptions } from '@/lib/labels'
 
 // ── Dropdown primitief ────────────────────────────────────────────────────────
 
@@ -92,24 +93,8 @@ function FilterDropdown<T extends string>({
 
 // ── Filter opties ─────────────────────────────────────────────────────────────
 
-const statusOptions: DropdownOption<SessionStatus | 'all'>[] = [
-  { value: 'all', label: 'Alle statussen' },
-  { value: 'success', label: 'Gelukt' },
-  { value: 'partial', label: 'Deels gelukt' },
-  { value: 'failed', label: 'Mislukt' },
-]
-
-const taskTypeOptions: DropdownOption<TaskType | ''>[] = [
-  { value: '', label: 'Alle thema\'s' },
-  { value: 'prompting', label: 'Prompting' },
-  { value: 'writing', label: 'Schrijven' },
-  { value: 'debugging', label: 'Debugging' },
-  { value: 'research', label: 'Onderzoek' },
-  { value: 'ontwikkelen', label: 'Ontwikkelen' },
-  { value: 'automation', label: 'Automatisering' },
-  { value: 'ideation', label: 'Ideevorming' },
-  { value: 'other', label: 'Overig' },
-]
+const statusOptions = statusFilterOptions as DropdownOption<SessionStatus | 'all'>[]
+const taskTypeOptions = taskTypeFilterOptions as DropdownOption<TaskType | ''>[]
 
 const promptOptions: DropdownOption<'all' | 'has_prompt'>[] = [
   { value: 'all', label: 'Alle sessies' },

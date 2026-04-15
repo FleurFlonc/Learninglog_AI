@@ -15,38 +15,7 @@ import { SelectField } from '@/components/forms/SelectField'
 import { TagsField } from '@/components/forms/TagsField'
 import { MultiSelectField } from '@/components/forms/MultiSelectField'
 import type { AIToolType, SessionStatus, TaskType, ProblemCategory, ResolutionType } from '@/models/enums'
-
-const toolLabels: Record<string, string> = {
-  chatgpt: 'ChatGPT', claude: 'Claude', cursor: 'Cursor',
-  gemini: 'Gemini', copilot: 'Copilot', other: 'Overig',
-}
-const statusOptions = [
-  { value: 'success', label: 'Gelukt' },
-  { value: 'partial', label: 'Deels gelukt' },
-  { value: 'failed', label: 'Mislukt' },
-]
-const aiToolOptions = [
-  { value: 'chatgpt', label: 'ChatGPT' }, { value: 'claude', label: 'Claude' },
-  { value: 'cursor', label: 'Cursor' }, { value: 'gemini', label: 'Gemini' },
-  { value: 'copilot', label: 'Copilot' }, { value: 'other', label: 'Overig' },
-]
-const taskTypeOptions = [
-  { value: 'debugging', label: 'Debugging' }, { value: 'prompting', label: 'Prompting' },
-  { value: 'writing', label: 'Schrijven' }, { value: 'research', label: 'Onderzoek' },
-  { value: 'automation', label: 'Automatisering' }, { value: 'ideation', label: 'Ideevorming' },
-  { value: 'ontwikkelen', label: 'Ontwikkelen' }, { value: 'other', label: 'Overig' },
-]
-const problemCategoryOptions = [
-  { value: 'prompting', label: 'Prompting' }, { value: 'technical', label: 'Technisch' },
-  { value: 'context', label: 'Context' }, { value: 'output_quality', label: 'Output kwaliteit' },
-  { value: 'workflow', label: 'Workflow' }, { value: 'unknown', label: 'Onbekend' },
-]
-const resolutionTypeOptions = [
-  { value: 'reprompt', label: 'Opnieuw geprompt' }, { value: 'more_context', label: 'Meer context' },
-  { value: 'changed_tool', label: 'Andere tool' }, { value: 'manual_fix', label: 'Handmatig opgelost' },
-  { value: 'code_fix', label: 'Code fix' }, { value: 'research', label: 'Onderzoek' },
-  { value: 'other', label: 'Overig' },
-]
+import { toolLabels, taskTypeLabels, problemCategoryLabels, resolutionTypeLabels, statusOptions, aiToolOptions, taskTypeOptions, problemCategoryOptions, resolutionTypeOptions, getLabel } from '@/lib/labels'
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -113,9 +82,9 @@ function ViewMode({ session, isOwner, onEdit, onDelete }: {
           </div>
         )}
 
-        {session.taskType && <DetailRow label="Type taak" value={session.taskType} />}
-        {session.problemCategory && <DetailRow label="Probleemcategorie" value={session.problemCategory} />}
-        {session.resolutionType && <DetailRow label="Type oplossing" value={session.resolutionType} />}
+        {session.taskType && <DetailRow label="Type taak" value={getLabel(taskTypeLabels, session.taskType)} />}
+        {session.problemCategory && <DetailRow label="Probleemcategorie" value={getLabel(problemCategoryLabels, session.problemCategory)} />}
+        {session.resolutionType && <DetailRow label="Type oplossing" value={getLabel(resolutionTypeLabels, session.resolutionType)} />}
 
 
         {session.tags && session.tags.length > 0 && (
