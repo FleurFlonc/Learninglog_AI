@@ -12,6 +12,7 @@ import { FormField, inputClass } from '@/components/forms/FormField'
 import { SelectField } from '@/components/forms/SelectField'
 import { TagsField } from '@/components/forms/TagsField'
 import { MultiSelectField } from '@/components/forms/MultiSelectField'
+import { RatingField } from '@/components/forms/RatingField'
 import { statusOptions, aiToolOptions, taskTypeOptions, problemCategoryOptions, resolutionTypeOptions } from '@/lib/labels'
 import { useToastStore } from '@/features/feedback/toastStore'
 
@@ -138,6 +139,26 @@ function ExtendedForm({ onSave }: { onSave: (data: SessionFormValues) => Promise
       <FormField label="Reflectie" htmlFor="reflectionNotes">
         <textarea id="reflectionNotes" {...register('reflectionNotes')} rows={2}
           placeholder="Vrije notities..." className={inputClass} />
+      </FormField>
+
+      <SectionDivider title="Beoordeling (optioneel)" />
+
+      <FormField label="Leerwaarde" htmlFor="learningValue">
+        <Controller name="learningValue" control={control}
+          render={({ field }) => <RatingField value={field.value} onChange={field.onChange} />} />
+        <p className="mt-1 text-xs text-gray-400">Hoeveel heb je geleerd van deze sessie?</p>
+      </FormField>
+
+      <FormField label="Frustratieniveau" htmlFor="frustrationLevel">
+        <Controller name="frustrationLevel" control={control}
+          render={({ field }) => <RatingField value={field.value} onChange={field.onChange} />} />
+        <p className="mt-1 text-xs text-gray-400">Hoe frustrerend was de sessie? (1 = weinig, 5 = veel)</p>
+      </FormField>
+
+      <FormField label="Zelfvertrouwen achteraf" htmlFor="confidenceAfter">
+        <Controller name="confidenceAfter" control={control}
+          render={({ field }) => <RatingField value={field.value} onChange={field.onChange} />} />
+        <p className="mt-1 text-xs text-gray-400">Hoe zeker voel je je nu over dit onderwerp?</p>
       </FormField>
 
       <FormField label="Tags" htmlFor="tags">

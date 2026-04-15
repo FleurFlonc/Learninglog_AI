@@ -24,6 +24,9 @@ export interface LearningSession {
 
   // Optionele meetvelden
   durationMinutes?: number
+  learningValue?: number
+  frustrationLevel?: number
+  confidenceAfter?: number
 
   // Prompt velden (inline gelogd bij de sessie)
   promptGoal?: string          // doel van de prompt

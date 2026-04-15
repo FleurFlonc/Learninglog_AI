@@ -14,6 +14,7 @@ import { FormField, inputClass } from '@/components/forms/FormField'
 import { SelectField } from '@/components/forms/SelectField'
 import { TagsField } from '@/components/forms/TagsField'
 import { MultiSelectField } from '@/components/forms/MultiSelectField'
+import { RatingField } from '@/components/forms/RatingField'
 import type { AIToolType, SessionStatus, TaskType, ProblemCategory, ResolutionType } from '@/models/enums'
 import { toolLabels, taskTypeLabels, problemCategoryLabels, resolutionTypeLabels, statusOptions, aiToolOptions, taskTypeOptions, problemCategoryOptions, resolutionTypeOptions, getLabel } from '@/lib/labels'
 import { useToastStore } from '@/features/feedback/toastStore'
@@ -101,6 +102,45 @@ function ViewMode({ session, isOwner, onEdit, onDelete }: {
           </div>
         )}
 
+        {/* Beoordelingen */}
+        {(session.learningValue !== undefined || session.frustrationLevel !== undefined || session.confidenceAfter !== undefined) && (
+          <>
+            <SectionDivider title="Beoordeling" />
+            <div className="flex flex-wrap gap-6">
+              {session.learningValue !== undefined && (
+                <div>
+                  <dt className="text-xs font-medium uppercase tracking-wide text-gray-400 mb-1">Leerwaarde</dt>
+                  <dd className="flex items-center gap-0.5">
+                    {[1,2,3,4,5].map((n) => (
+                      <span key={n} className={`text-base ${n <= session.learningValue! ? 'text-sage-400' : 'text-gray-200'}`}>★</span>
+                    ))}
+                  </dd>
+                </div>
+              )}
+              {session.frustrationLevel !== undefined && (
+                <div>
+                  <dt className="text-xs font-medium uppercase tracking-wide text-gray-400 mb-1">Frustratieniveau</dt>
+                  <dd className="flex items-center gap-0.5">
+                    {[1,2,3,4,5].map((n) => (
+                      <span key={n} className={`text-base ${n <= session.frustrationLevel! ? 'text-sage-400' : 'text-gray-200'}`}>★</span>
+                    ))}
+                  </dd>
+                </div>
+              )}
+              {session.confidenceAfter !== undefined && (
+                <div>
+                  <dt className="text-xs font-medium uppercase tracking-wide text-gray-400 mb-1">Zelfvertrouwen achteraf</dt>
+                  <dd className="flex items-center gap-0.5">
+                    {[1,2,3,4,5].map((n) => (
+                      <span key={n} className={`text-base ${n <= session.confidenceAfter! ? 'text-sage-400' : 'text-gray-200'}`}>★</span>
+                    ))}
+                  </dd>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+
         {/* Prompt sectie */}
         {hasPromptData && (
           <>
@@ -148,6 +188,9 @@ function EditMode({ session, onCancel, onSave }: {
       taskType: session.taskType as TaskType | undefined,
       problemCategory: session.problemCategory as ProblemCategory | undefined,
       resolutionType: session.resolutionType as ResolutionType | undefined,
+      learningValue: session.learningValue,
+      frustrationLevel: session.frustrationLevel,
+      confidenceAfter: session.confidenceAfter,
       promptGoal: session.promptGoal ?? '',
       systemPrompt: session.systemPrompt ?? '',
       userPrompt: session.userPrompt ?? '',
@@ -213,6 +256,26 @@ function EditMode({ session, onCancel, onSave }: {
         <FormField label="Tags" htmlFor="tags">
           <Controller name="tags" control={control}
             render={({ field }) => <TagsField value={field.value ?? []} onChange={field.onChange} />} />
+        </FormField>
+
+        <SectionDivider title="Beoordeling (optioneel)" />
+
+        <FormField label="Leerwaarde" htmlFor="learningValue">
+          <Controller name="learningValue" control={control}
+            render={({ field }) => <RatingField value={field.value} onChange={field.onChange} />} />
+          <p className="mt-1 text-xs text-gray-400">Hoeveel heb je geleerd van deze sessie?</p>
+        </FormField>
+
+        <FormField label="Frustratieniveau" htmlFor="frustrationLevel">
+          <Controller name="frustrationLevel" control={control}
+            render={({ field }) => <RatingField value={field.value} onChange={field.onChange} />} />
+          <p className="mt-1 text-xs text-gray-400">Hoe frustrerend was de sessie? (1 = weinig, 5 = veel)</p>
+        </FormField>
+
+        <FormField label="Zelfvertrouwen achteraf" htmlFor="confidenceAfter">
+          <Controller name="confidenceAfter" control={control}
+            render={({ field }) => <RatingField value={field.value} onChange={field.onChange} />} />
+          <p className="mt-1 text-xs text-gray-400">Hoe zeker voel je je nu over dit onderwerp?</p>
         </FormField>
 
         {/* Prompt sectie */}

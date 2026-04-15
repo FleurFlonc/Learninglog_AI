@@ -61,6 +61,9 @@ export const SessionSchema = z.object({
   taskType: z.preprocess(emptyToUndefined, taskTypeSchema.optional()),
   problemCategory: z.preprocess(emptyToUndefined, problemCategorySchema.optional()),
   resolutionType: z.preprocess(emptyToUndefined, resolutionTypeSchema.optional()),
+  learningValue: z.number().min(1).max(5).optional(),
+  frustrationLevel: z.number().min(1).max(5).optional(),
+  confidenceAfter: z.number().min(1).max(5).optional(),
   // Prompt velden
   promptGoal: z.string().max(500).optional(),
   systemPrompt: z.string().max(10000).optional(),

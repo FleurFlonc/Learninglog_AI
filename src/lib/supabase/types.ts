@@ -28,6 +28,9 @@ export interface Database {
           problem_category: string | null
           resolution_type: string | null
           duration_minutes: number | null
+          learning_value: number | null
+          frustration_level: number | null
+          confidence_after: number | null
           prompt_goal: string | null
           system_prompt: string | null
           user_prompt: string | null
@@ -55,6 +58,9 @@ export interface Database {
           problem_category?: string | null
           resolution_type?: string | null
           duration_minutes?: number | null
+          learning_value?: number | null
+          frustration_level?: number | null
+          confidence_after?: number | null
           prompt_goal?: string | null
           system_prompt?: string | null
           user_prompt?: string | null
@@ -82,6 +88,9 @@ export interface Database {
           problem_category?: string | null
           resolution_type?: string | null
           duration_minutes?: number | null
+          learning_value?: number | null
+          frustration_level?: number | null
+          confidence_after?: number | null
           prompt_goal?: string | null
           system_prompt?: string | null
           user_prompt?: string | null
