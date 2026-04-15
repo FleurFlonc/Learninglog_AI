@@ -10,6 +10,7 @@ import { SessionDetailPage } from '@/features/sessions/pages/SessionDetailPage'
 import { PromptsPage } from '@/features/prompts/pages/PromptsPage'
 import { NewPromptPage } from '@/features/prompts/pages/NewPromptPage'
 import { PromptDetailPage } from '@/features/prompts/pages/PromptDetailPage'
+import { StatsPage } from '@/features/stats/pages/StatsPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading, requiresPasswordSetup } = useAuthStore()
@@ -49,6 +50,7 @@ export function AppRoutes() {
         <Route path="prompts" element={<PromptsPage />} />
         <Route path="prompts/new" element={<NewPromptPage />} />
         <Route path="prompts/:id" element={<PromptDetailPage />} />
+        <Route path="stats" element={<StatsPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/sessions" replace />} />
     </Routes>
