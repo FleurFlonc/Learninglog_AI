@@ -13,6 +13,7 @@ import { SelectField } from '@/components/forms/SelectField'
 import { TagsField } from '@/components/forms/TagsField'
 import { MultiSelectField } from '@/components/forms/MultiSelectField'
 import { statusOptions, aiToolOptions, taskTypeOptions, problemCategoryOptions, resolutionTypeOptions } from '@/lib/labels'
+import { useToastStore } from '@/features/feedback/toastStore'
 
 function SectionDivider({ title }: { title: string }) {
   return (
@@ -220,10 +221,12 @@ export function NewSessionPage() {
   const { create } = useSessionStore()
   const { create: createPrompt } = usePromptStore()
   const user = useAuthStore((s) => s.user)
+  const toast = useToastStore((s) => s.show)
 
   async function handleQuickSave(data: QuickEntryFormValues) {
     if (!user) return
     await create({ ...data, isPublic: data.isPublic ?? true }, user)
+    toast('Sessie opgeslagen')
     navigate('/sessions')
   }
 
@@ -250,6 +253,7 @@ export function NewSessionPage() {
       }, user)
     }
 
+    toast('Sessie opgeslagen')
     navigate('/sessions')
   }
 

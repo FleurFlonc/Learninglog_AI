@@ -11,6 +11,7 @@ import { SelectField } from '@/components/forms/SelectField'
 import { MultiSelectField } from '@/components/forms/MultiSelectField'
 import { TagsField } from '@/components/forms/TagsField'
 import { RatingField } from '@/components/forms/RatingField'
+import { useToastStore } from '@/features/feedback/toastStore'
 
 const aiToolOptions = [
   { value: 'chatgpt', label: 'ChatGPT' },
@@ -45,6 +46,7 @@ export function NewPromptPage() {
   const navigate = useNavigate()
   const { create } = usePromptStore()
   const user = useAuthStore((s) => s.user)
+  const toast = useToastStore((s) => s.show)
 
   const { register, handleSubmit, control, formState: { errors, isSubmitting } } = useForm<PromptFormValues>({
     resolver: zodResolver(PromptSchema),
@@ -54,6 +56,7 @@ export function NewPromptPage() {
   async function handleSave(data: PromptFormValues) {
     if (!user) return
     const prompt = await create(data, user)
+    toast('Prompt opgeslagen')
     navigate(`/prompts/${prompt.id}`, { replace: true })
   }
 

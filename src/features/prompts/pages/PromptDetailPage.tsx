@@ -15,6 +15,7 @@ import { MultiSelectField } from '@/components/forms/MultiSelectField'
 import { TagsField } from '@/components/forms/TagsField'
 import { RatingField } from '@/components/forms/RatingField'
 import { toolLabels, taskTypeLabels, aiToolOptions, taskTypeOptions } from '@/lib/labels'
+import { useToastStore } from '@/features/feedback/toastStore'
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -301,6 +302,7 @@ export function PromptDetailPage() {
   const navigate = useNavigate()
   const { prompts, fetchAll, update, remove } = usePromptStore()
   const user = useAuthStore((s) => s.user)
+  const toast = useToastStore((s) => s.show)
   const [isEditing, setIsEditing] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [notFound, setNotFound] = useState(false)
@@ -319,6 +321,7 @@ export function PromptDetailPage() {
   async function handleSave(data: PromptFormValues) {
     if (!id) return
     await update({ id, ...data })
+    toast('Wijzigingen opgeslagen')
     setIsEditing(false)
   }
 
@@ -328,6 +331,7 @@ export function PromptDetailPage() {
     setIsDeleting(true)
     try {
       await remove(id)
+      toast('Prompt verwijderd')
       navigate('/prompts', { replace: true })
     } finally {
       setIsDeleting(false)

@@ -1,5 +1,6 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/features/auth/store/authStore'
+import { ToastContainer } from '@/features/feedback/ToastContainer'
 
 const navItems = [
   { to: '/sessions', label: 'Alle sessies' },
@@ -124,6 +125,7 @@ export function AppLayout() {
         <Outlet />
       </main>
       <MobileBottomNav />
+      <ToastContainer />
     </div>
   )
 }

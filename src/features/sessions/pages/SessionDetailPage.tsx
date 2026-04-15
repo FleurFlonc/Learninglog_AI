@@ -16,6 +16,7 @@ import { TagsField } from '@/components/forms/TagsField'
 import { MultiSelectField } from '@/components/forms/MultiSelectField'
 import type { AIToolType, SessionStatus, TaskType, ProblemCategory, ResolutionType } from '@/models/enums'
 import { toolLabels, taskTypeLabels, problemCategoryLabels, resolutionTypeLabels, statusOptions, aiToolOptions, taskTypeOptions, problemCategoryOptions, resolutionTypeOptions, getLabel } from '@/lib/labels'
+import { useToastStore } from '@/features/feedback/toastStore'
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -291,6 +292,7 @@ export function SessionDetailPage() {
   const { sessions, fetchAll, update, remove } = useSessionStore()
   const { create: createPrompt } = usePromptStore()
   const user = useAuthStore((s) => s.user)
+  const toast = useToastStore((s) => s.show)
   const [isEditing, setIsEditing] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [notFound, setNotFound] = useState(false)
@@ -329,6 +331,7 @@ export function SessionDetailPage() {
       }, user)
     }
 
+    toast('Wijzigingen opgeslagen')
     setIsEditing(false)
   }
 
@@ -338,6 +341,7 @@ export function SessionDetailPage() {
     setIsDeleting(true)
     try {
       await remove(id)
+      toast('Sessie verwijderd')
       navigate('/sessions', { replace: true })
     } finally {
       setIsDeleting(false)
