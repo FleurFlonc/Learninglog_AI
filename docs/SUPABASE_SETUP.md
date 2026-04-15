@@ -40,6 +40,7 @@ create table sessions (
   duration_minutes integer,
   prompt_id uuid,
   is_favorite boolean default false,
+  is_public boolean default true,
   tags text[]
 );
 
@@ -74,10 +75,10 @@ create table prompts (
 -- Sessions RLS
 alter table sessions enable row level security;
 
-create policy "Teamleden kunnen alle sessies lezen"
+create policy "Teamleden kunnen publieke en eigen sessies lezen"
   on sessions for select
   to authenticated
-  using (true);
+  using (is_public = true OR auth.uid() = user_id);
 
 create policy "Gebruiker kan eigen sessies aanmaken"
   on sessions for insert

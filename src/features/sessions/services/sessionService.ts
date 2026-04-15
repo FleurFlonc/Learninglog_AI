@@ -137,9 +137,13 @@ export const sessionService = {
   },
 
   async getAllSessions(): Promise<LearningSession[]> {
+    const { data: userData } = await supabase.auth.getUser()
+    const userId = userData.user?.id
+
     const { data, error } = await supabase
       .from('sessions')
       .select()
+      .or(`is_public.eq.true,user_id.eq.${userId}`)
       .order('created_at', { ascending: false })
 
     if (error) throw new Error(error.message)
@@ -147,9 +151,13 @@ export const sessionService = {
   },
 
   async searchSessions(query: string): Promise<LearningSession[]> {
+    const { data: userData } = await supabase.auth.getUser()
+    const userId = userData.user?.id
+
     const { data, error } = await supabase
       .from('sessions')
       .select()
+      .or(`is_public.eq.true,user_id.eq.${userId}`)
       .or(
         `task_description.ilike.%${query}%,lesson_learned.ilike.%${query}%,what_went_wrong.ilike.%${query}%`
       )
@@ -160,7 +168,13 @@ export const sessionService = {
   },
 
   async filterSessions(filters: SessionFilters): Promise<LearningSession[]> {
-    let query = supabase.from('sessions').select()
+    const { data: userData } = await supabase.auth.getUser()
+    const userId = userData.user?.id
+
+    let query = supabase
+      .from('sessions')
+      .select()
+      .or(`is_public.eq.true,user_id.eq.${userId}`)
 
     if (filters.status) query = query.eq('status', filters.status)
     if (filters.taskType) query = query.eq('task_type', filters.taskType)
