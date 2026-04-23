@@ -3,10 +3,10 @@ import { useAuthStore } from '@/features/auth/store/authStore'
 import { ToastContainer } from '@/features/feedback/ToastContainer'
 
 const navItems = [
-  { to: '/sessions', label: 'Alle sessies' },
-  { to: '/my-sessions', label: 'Mijn sessies' },
-  { to: '/prompts', label: 'Prompts' },
-  { to: '/stats', label: 'Inzichten' },
+  { to: '/sessions', label: 'Alle sessies', end: true },
+  { to: '/my-sessions', label: 'Mijn sessies', end: true },
+  { to: '/prompts', label: 'Prompts', end: true },
+  { to: '/stats', label: 'Inzichten', end: true },
 ]
 
 function DesktopNav() {
@@ -34,6 +34,7 @@ function DesktopNav() {
             <NavLink
               key={item.to}
               to={item.to}
+              end={item.end}
               className={({ isActive }) =>
                 `rounded-lg px-3.5 py-1.5 text-sm font-medium transition ${
                   isActive
@@ -79,6 +80,7 @@ function MobileBottomNav() {
         <NavLink
           key={item.to}
           to={item.to}
+          end={item.end}
           className={({ isActive }) =>
             `flex flex-1 flex-col items-center gap-0.5 py-3 text-xs font-medium transition ${
               isActive ? 'text-sage-500' : 'text-gray-400'
