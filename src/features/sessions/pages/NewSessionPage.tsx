@@ -169,27 +169,27 @@ function ExtendedForm({ onSave }: { onSave: (data: SessionFormValues) => Promise
       {/* Prompt sectie */}
       <SectionDivider title="Prompt details (optioneel)" />
 
-      <FormField label="Doel van de prompt" htmlFor="promptGoal">
+      <FormField label="Doel van de prompt" htmlFor="promptGoal" error={errors.promptGoal?.message}>
         <textarea id="promptGoal" {...register('promptGoal')} rows={2}
           placeholder="Wat wilde je bereiken met deze prompt?" className={inputClass} />
       </FormField>
 
-      <FormField label="Systeemprompt" htmlFor="systemPrompt">
+      <FormField label="Systeemprompt" htmlFor="systemPrompt" error={errors.systemPrompt?.message}>
         <textarea id="systemPrompt" {...register('systemPrompt')} rows={4}
           placeholder="De systeemprompt die je hebt gebruikt..." className={inputClass} />
       </FormField>
 
-      <FormField label="Gebruikersprompt" htmlFor="userPrompt">
+      <FormField label="Gebruikersprompt" htmlFor="userPrompt" error={errors.userPrompt?.message}>
         <textarea id="userPrompt" {...register('userPrompt')} rows={4}
           placeholder="De prompt die je hebt ingevoerd..." className={inputClass} />
       </FormField>
 
-      <FormField label="Output van de AI" htmlFor="promptOutput">
+      <FormField label="Output van de AI" htmlFor="promptOutput" error={errors.promptOutput?.message}>
         <textarea id="promptOutput" {...register('promptOutput')} rows={4}
           placeholder="Wat was de uitkomst of het antwoord..." className={inputClass} />
       </FormField>
 
-      <FormField label="Verbeterde prompt" htmlFor="improvedPrompt">
+      <FormField label="Verbeterde prompt" htmlFor="improvedPrompt" error={errors.improvedPrompt?.message}>
         <textarea id="improvedPrompt" {...register('improvedPrompt')} rows={4}
           placeholder="Hoe zou je de prompt achteraf verbeteren?" className={inputClass} />
       </FormField>
